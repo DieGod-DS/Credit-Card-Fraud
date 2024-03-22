@@ -11,6 +11,25 @@ class ModelingML():
     
     
     def classification_model(self, model, scaler, x_train, x_test, y_train,y_test):
+        '''
+        Esta função é reponsavel por criar a pipeline para os modelos de machine learning.
+        
+        Args:
+            model: O modelo de machine learning.
+            scaler: O escalonador dos dados
+            x_train: O conjunto de treino sem a váriavel alvo.
+            x_test: O conjunto de teste sem a variável alvo.
+            y_train: O conjunto de treino com a variável alvo.
+            y_test: O conjunto de teste com a variável alvo.
+        
+        Returns:
+            y_pred: São os valores previstos após o treinamento do conjunto de dados.
+            accuracy: Valor da acurácia do modelo de machine learning.
+            cm: Valores da matriz de confusão do modelo
+            fpr: Taxa de falsos positivos do modelo.
+            tpr: Taxa de verdadeiros positivos do modelo.
+            auc: Valor da métrica que avalia a qualidade do modelo de classificação.
+        '''
         
         # cria pipeline
         pipeline = make_pipeline(scaler, model)
@@ -31,7 +50,7 @@ class ModelingML():
         fpr, tpr, thresholds = roc_curve(y_test, y_pred)
         auc = roc_auc_score(y_test, y_pred)
         
-        return y_pred, accuracy, cm, fpr, tpr, thresholds, auc
+        return y_pred, accuracy, cm, fpr, tpr, auc
     
     
     
@@ -40,6 +59,18 @@ class ModelingML():
     
     
     def metrics_validation(self, y_test, y_pred, accuracy, cm):
+        '''
+        Esta função é responsável por calcular as métricas de validação do modelo.
+        
+        Args:
+            y_test: O conjunto de teste com a variável alvo.
+            y_pred: São os valores previstos após o treinamento do conjunto de dados.
+            accuracy: Valor da acurácia do modelo de machine learning.
+            cm: Valores da matriz de confusão do modelo
+        
+        Returns:
+            Exibe a plotagem de valores e gráficos da validação.
+        '''
         
         # exibindo F1-score e Recall
         print(classification_report(y_test,y_pred))
@@ -61,7 +92,17 @@ class ModelingML():
 
 
     def cross_val(self, fpr, tpr, auc):
+        '''
+        Esta função é responável por exibir o gráfico de validação cruzada.
         
+        Args:
+            fpr: Taxa de falsos positivos do modelo.
+            tpr: Taxa de verdadeiros positivos do modelo.
+            auc: Valor da métrica que avalia a qualidade do modelo de classificação.
+            
+        Returns:
+            Polta o gráfico de validação cruzada
+        '''
         # exibindo validação crusada
         plt.figure(figsize=(6,6))
         plt.plot(fpr, tpr, label=f'Regressão logística (AUC = {auc:.2f})')
